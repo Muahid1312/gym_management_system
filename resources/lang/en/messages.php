@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'dashboard' => 'Dashboard',
+    'members' => 'Members',
+    'plans' => 'Plans',
+    'payments' => 'Payments',
+    'reports' => 'Reports',
+    'attendance' => 'Attendance',
+    'name' => 'Name',
+    'email' => 'Email',
+    'phone' => 'Phone',
+    'join_date' => 'Join Date',
+    'expiry_date' => 'Expiry Date',
+    'plan' => 'Plan',
+    'amount' => 'Amount',
+    'paid_at' => 'Paid At',
+    'debt' => 'Debt',
+    'active' => 'Active',
+    'expired' => 'Expired',
+    'generate_qr' => 'Generate QR',
+    'check_in' => 'Check In',
+    'export_pdf' => 'Export PDF',
+    'generate_workout' => 'Generate Workout Plan',
+    'generate_diet' => 'Generate Diet Plan',
+];

@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'dashboard' => 'داشبورد',
+    'members' => 'اعضا',
+    'plans' => 'پلان‌ها',
+    'payments' => 'پرداخت‌ها',
+    'reports' => 'گزارش‌ها',
+    'attendance' => 'حضور',
+    'name' => 'نام',
+    'email' => 'ایمیل',
+    'phone' => 'تلفن',
+    'join_date' => 'تاریخ عضویت',
+    'expiry_date' => 'تاریخ انقضا',
+    'plan' => 'پلان',
+    'amount' => 'مبلغ',
+    'paid_at' => 'تاریخ پرداخت',
+    'debt' => 'بدهی',
+    'active' => 'فعال',
+    'expired' => 'منقضی',
+    'generate_qr' => 'تولید QR',
+    'check_in' => 'ورود',
+    'export_pdf' => 'صدور PDF',
+    'generate_workout' => 'تولید پلان ورزشی',
+    'generate_diet' => 'تولید پلان غذایی',
+];
