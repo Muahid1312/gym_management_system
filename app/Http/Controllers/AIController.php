@@ -147,8 +147,7 @@ class AIController extends Controller
         try {
             return $this->planService->generateCombinedPdf($member);
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', __('messages.pdf_generate_failed') . ' ' . $e->getMessage());
+            throw new \Exception(__('messages.pdf_generate_failed') . ' ' . $e->getMessage());
         }
     }
 
@@ -160,8 +159,7 @@ class AIController extends Controller
         try {
             return $this->planService->generateProfessionalPdf($member);
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', __('messages.pdf_generate_failed') . ' ' . $e->getMessage());
+            throw new \Exception(__('messages.pdf_generate_failed') . ' ' . $e->getMessage());
         }
     }
 

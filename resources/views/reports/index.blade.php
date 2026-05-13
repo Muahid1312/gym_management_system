@@ -9,11 +9,11 @@
         <div class="grid">
             <div class="card">
                 <h3>Daily Income</h3>
-                <p>${{ number_format($dailyIncome, 2) }}</p>
+                <p>AF {{ number_format($dailyIncome, 2) }}</p>
             </div>
             <div class="card">
                 <h3>Monthly Income</h3>
-                <p>${{ number_format($monthlyIncome, 2) }}</p>
+                <p>AF {{ number_format($monthlyIncome, 2) }}</p>
             </div>
             <div class="card">
                 <h3>{{ __('messages.active') }} Members</h3>
@@ -36,7 +36,7 @@
                 @foreach($membersWithDebt as $member)
                     <tr>
                         <td>{{ $member['name'] }}</td>
-                        <td>${{ number_format($member['debt'], 2) }}</td>
+                        <td>AF {{ number_format($member['debt'], 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>

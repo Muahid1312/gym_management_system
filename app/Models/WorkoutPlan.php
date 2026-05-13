@@ -11,12 +11,17 @@ class WorkoutPlan extends Model
 
     protected $fillable = [
         'member_id',
+        'age',
+        'weight',
+        'height',
+        'goal',
         'level',
         'plan_data',
     ];
 
     protected $casts = [
         'plan_data' => 'array',
+        'weight' => 'decimal:2',
     ];
 
     public function member()

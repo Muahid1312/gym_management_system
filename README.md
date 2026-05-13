@@ -7,6 +7,27 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Offline Gym Management System
+
+This repository is configured to run fully offline with:
+
+- Local MySQL / MariaDB database
+- Local PDF generation using DomPDF
+- Local asset build via Vite, Tailwind CSS, Alpine.js, and Font Awesome
+- Rule-based workout and diet plan generation with no external AI or cloud API calls
+- Local backups stored in `storage/app/backups`
+
+### Local setup
+
+1. Install PHP, Composer, Node.js, and a local MySQL server (XAMPP, Laragon, or similar).
+2. Copy `.env.example` to `.env` and set `DB_CONNECTION=mysql`, `DB_HOST=127.0.0.1`, `DB_PORT=3306`, and your local database credentials.
+3. Run `composer install`.
+4. Run `npm install`.
+5. Run `php artisan key:generate`.
+6. Run `php artisan migrate`.
+7. Run `npm run build`.
+8. Start the app with `php artisan serve`.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

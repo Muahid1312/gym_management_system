@@ -4,14 +4,70 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use App\Models\Plan;
+use App\Services\RiskDetectionService;
+use App\Services\FinancialReportService;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    public function index()
+    public function __construct(
+        private RiskDetectionService $riskService,
+        private FinancialReportService $financialService
+    ) {}
+
+    public function index(Request $request)
     {
-        return view('members.index', [
-            'members' => Member::with('plan')->orderBy('name')->get(),
+        $query = Member::with('plan');
+
+        // Search by name or phone
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by status
+        $filter = $request->input('filter', 'all');
+        match ($filter) {
+            'active' => $query->where('expiry_date', '>=', now()->toDateString()),
+            'expired' => $query->where('expiry_date', '<', now()->toDateString()),
+            'expiring_soon' => $query->whereBetween('expiry_date', [
+                now()->toDateString(),
+                now()->addDays(3)->toDateString(),
+            ]),
+            'in_debt' => $query->where('debt', '>', 0),
+            default => null,
+        };
+
+        $members = $query->orderBy('name')->get();
+        $viewMode = $request->input('view_mode', 'dropdown');
+
+        return view($viewMode === 'modal' ? 'members.index-modal' : 'members.index', [
+            'members' => $members,
+            'filter' => $filter,
+            'search' => $request->input('search'),
+            'viewMode' => $viewMode,
+        ]);
+    }
+
+    /**
+     * Show member profile with detailed information.
+     */
+    public function show(Member $member)
+    {
+        $member->load(['plan', 'payments', 'attendances', 'workoutPlans', 'dietPlans', 'lockerAssignment.locker']);
+
+        $paymentStats = $this->financialService->getMemberPaymentStats($member->id);
+        $daysUntilExpiry = $this->riskService->getDaysUntilExpiry($member);
+        $isAtRisk = $this->riskService->isAtRisk($member);
+
+        return view('members.show', [
+            'member' => $member,
+            'paymentStats' => $paymentStats,
+            'daysUntilExpiry' => $daysUntilExpiry,
+            'isAtRisk' => $isAtRisk,
         ]);
     }
 
@@ -27,7 +83,7 @@ class MemberController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|string|max:255',
             'phone' => 'required|string|max:50',
             'photo' => 'nullable|image|max:2048',
             'plan_id' => 'required|exists:plans,id',
@@ -61,7 +117,7 @@ class MemberController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|string|max:255',
             'phone' => 'required|string|max:50',
             'photo' => 'nullable|image|max:2048',
             'plan_id' => 'required|exists:plans,id',

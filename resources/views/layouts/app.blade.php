@@ -816,26 +816,6 @@
             white-space: nowrap;
         }
 
-        .loading {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid var(--border);
-            border-top: 2px solid var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         .footer {
             text-align: center;
             padding: 24px 0;
@@ -887,9 +867,49 @@
                 margin: 20px;
             }
         }
+    .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(3px);
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .page-loader .loader {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #111;
+            animation: l5 1s infinite linear alternate;
+        }
+
+        @keyframes l5 {
+            0%  { box-shadow: 20px 0 #000, -20px 0 #0002; background: #000; }
+            33% { box-shadow: 20px 0 #000, -20px 0 #0002; background: #0002; }
+            66% { box-shadow: 20px 0 #0002, -20px 0 #000; background: #0002; }
+            100%{ box-shadow: 20px 0 #0002, -20px 0 #000; background: #000; }
+        }
     </style>
 </head>
 <body>
+    <div id="pageLoader" class="page-loader" role="status" aria-live="polite">
+        <div class="loader"></div>
+    </div>
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -914,7 +934,7 @@
                 </svg>
                 {{ __('messages.payments') }}
             </a>
-            <a href="#" class="{{ request()->routeIs('expenses.*') ? 'active' : '' }}">
+            <a href="{{ route('expenses.index') }}" class="{{ request()->routeIs('expenses.*') ? 'active' : '' }}">
                 <svg class="icon" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                 </svg>
@@ -1309,11 +1329,58 @@
             initOfflineForms();
         });
 
+        // Page loader
+        const pageLoader = document.getElementById('pageLoader');
+        let loaderTimeout = null;
+
+        const hideLoader = () => {
+            if (!pageLoader) return;
+            pageLoader.classList.add('hidden');
+            if (loaderTimeout) {
+                clearTimeout(loaderTimeout);
+                loaderTimeout = null;
+            }
+        };
+
+        const showLoader = () => {
+            if (!pageLoader) return;
+            pageLoader.classList.remove('hidden');
+            if (loaderTimeout) {
+                clearTimeout(loaderTimeout);
+            }
+            loaderTimeout = setTimeout(hideLoader, 15000);
+        };
+
+        document.addEventListener('submit', (event) => {
+            const form = event.target;
+            if (form?.tagName === 'FORM') {
+                showLoader();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            const source = event.target instanceof Element ? event.target : event.target.parentElement;
+            const trigger = source?.closest('[data-show-loader], .js-show-loader');
+            if (trigger) {
+                showLoader();
+            }
+        });
+
+        if (document.readyState === 'complete') {
+            hideLoader();
+        } else {
+            window.addEventListener('load', () => {
+                hideLoader();
+            });
+        }
+
         // Global functions for use in templates
         window.openModal = openModal;
         window.closeModal = closeModal;
         window.showToast = showToast;
         window.toggleSidebar = toggleSidebar;
+        window.showLoader = showLoader;
+        window.hideLoader = hideLoader;
     </script>
     <script>
         if ('serviceWorker' in navigator) {

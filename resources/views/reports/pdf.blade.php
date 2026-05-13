@@ -11,8 +11,8 @@
 </head>
 <body>
     <h1>Gym Report</h1>
-    <p>Daily Income: ${{ number_format($dailyIncome, 2) }}</p>
-    <p>Monthly Income: ${{ number_format($monthlyIncome, 2) }}</p>
+    <p>Daily Income: AF {{ number_format($dailyIncome, 2) }}</p>
+    <p>Monthly Income: AF {{ number_format($monthlyIncome, 2) }}</p>
     <p>Active Members: {{ $activeMembers }}</p>
     <p>Expired Members: {{ $expiredMembers }}</p>
     <h2>Members with Debt</h2>
@@ -27,7 +27,7 @@
             @foreach($membersWithDebt as $member)
                 <tr>
                     <td>{{ $member['name'] }}</td>
-                    <td>${{ number_format($member['debt'], 2) }}</td>
+                    <td>AF {{ number_format($member['debt'], 2) }}</td>
                 </tr>
             @endforeach
         </tbody>

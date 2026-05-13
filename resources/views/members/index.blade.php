@@ -1,121 +1,128 @@
 @extends('layouts.app')
 
+@section('title', 'Members')
+
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-slate-950 border border-slate-800 shadow-2xl rounded-[28px] overflow-hidden">
-        <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-950 px-6 py-8 sm:px-8">
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-sm uppercase tracking-[0.32em] text-amber-400">Members</p>
-                    <h1 class="mt-3 text-3xl font-semibold text-white">Gym Member Management</h1>
-                    <p class="mt-2 max-w-2xl text-sm text-slate-400">Manage member profiles, membership plans, and actions in a clean, easy interface.</p>
-                </div>
-                <a href="{{ route('members.create') }}" class="inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition">Add Member</a>
-            </div>
-        </div>
-
-        <div class="overflow-x-auto px-4 py-6 sm:px-6">
-            <table class="min-w-full divide-y divide-slate-800 text-sm">
-                <thead class="bg-slate-900 text-slate-400">
-                    <tr>
-                        <th class="px-4 py-3 text-left uppercase tracking-[0.18em]">Member</th>
-                        <th class="px-4 py-3 text-left uppercase tracking-[0.18em]">Plan</th>
-                        <th class="px-4 py-3 text-left uppercase tracking-[0.18em]">Expiry</th>
-                        <th class="px-4 py-3 text-left uppercase tracking-[0.18em]">Workout</th>
-                        <th class="px-4 py-3 text-left uppercase tracking-[0.18em]">Diet</th>
-                        <th class="px-4 py-3 text-right uppercase tracking-[0.18em]">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800 bg-slate-950">
-                    @foreach($members as $member)
-                        <tr class="group hover:bg-slate-900/70 transition">
-                            <td class="px-4 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-800 text-sm font-bold text-slate-200">{{ strtoupper(substr($member->name, 0, 1)) }}</div>
-                                    <div class="min-w-0">
-                                        <p class="font-semibold text-white">{{ $member->name }}</p>
-                                        <p class="text-xs text-slate-400 truncate">{{ $member->phone }} · {{ $member->email ?? 'No email' }}</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-4 text-slate-300">{{ $member->plan->name }}</td>
-                            <td class="px-4 py-4 text-slate-300">{{ $member->expiry_date->format('Y-m-d') }}</td>
-                            <td class="px-4 py-4 text-slate-300">{{ ucfirst($member->workout_level) }}</td>
-                            <td class="px-4 py-4 text-slate-300">{{ ucfirst($member->diet_level) }}</td>
-                            <td class="px-4 py-4 text-right relative" data-dropdown>
-                                <button type="button" onclick="toggleDropdown('dropdown-{{ $member->id }}')" class="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800 px-4 py-2 text-sm font-semibold text-slate-100 hover:bg-slate-700 transition">
-                                    Actions
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M10 12a1 1 0 01-.707-.293l-3-3a1 1 0 011.414-1.414L10 9.586l2.293-2.293a1 1 0 011.414 1.414l-3 3A1 1 0 0110 12z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-
-                                <div id="dropdown-{{ $member->id }}" class="hidden absolute right-0 z-20 mt-2 w-56 overflow-hidden rounded-3xl border border-slate-700 bg-slate-950 shadow-2xl shadow-black/40">
-                                    <a href="{{ route('members.edit', $member) }}" class="flex items-center gap-2 px-4 py-3 text-sm text-slate-100 hover:bg-slate-900">
-                                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">E</span>
-                                        Edit
-                                    </a>
-                                    <a href="{{ route('members.qr', $member) }}" class="flex items-center gap-2 px-4 py-3 text-sm text-slate-100 hover:bg-slate-900">
-                                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">Q</span>
-                                        Generate QR
-                                    </a>
-                                    <form action="{{ route('ai.workout', $member) }}" method="POST" class="border-t border-slate-800">
-                                        @csrf
-                                        <input type="hidden" name="age" value="25">
-                                        <input type="hidden" name="weight" value="70">
-                                        <input type="hidden" name="height" value="175">
-                                        <input type="hidden" name="goal" value="fitness">
-                                        <input type="hidden" name="level" value="{{ $member->workout_level }}">
-                                        <button type="submit" class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm text-slate-100 hover:bg-slate-900">
-                                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">W</span>
-                                            Generate Workout
-                                        </button>
-                                    </form>
-                                    <form action="{{ route('ai.diet', $member) }}" method="POST" class="border-t border-slate-800">
-                                        @csrf
-                                        <input type="hidden" name="age" value="25">
-                                        <input type="hidden" name="weight" value="70">
-                                        <input type="hidden" name="height" value="175">
-                                        <input type="hidden" name="goal" value="fitness">
-                                        <input type="hidden" name="level" value="{{ $member->diet_level }}">
-                                        <button type="submit" class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm text-slate-100 hover:bg-slate-900">
-                                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">D</span>
-                                            Generate Diet
-                                        </button>
-                                    </form>
-                                    <form action="{{ route('members.destroy', $member) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this member?');" class="border-t border-slate-800">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="flex w-full items-center gap-2 px-4 py-3 text-left text-sm text-rose-300 hover:bg-slate-900">
-                                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-rose-500/10 text-rose-400">D</span>
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+<div class="page-header">
+    <h1 class="page-title">مدیریت اعضاء</h1>
+    <p class="page-subtitle">اعضای باشگاه خود را به یک انترفیس حرفه ای و یکپارچه  جستجو فیلتر و مدیریت کنید!</p>
 </div>
 
-<script>
-    function toggleDropdown(id) {
-        document.querySelectorAll('[id^="dropdown-"]').forEach(menu => {
-            if (menu.id !== id) {
-                menu.classList.add('hidden');
-            }
-        });
-        const dropdown = document.getElementById(id);
-        if (dropdown) dropdown.classList.toggle('hidden');
-    }
+<div class="button-group" style="margin-bottom: 2rem;">
+    <a href="{{ route('members.create') }}" class="button">عضو جدید</a>
+    <a href="{{ route('members.index', array_merge(request()->except('view_mode'), ['view_mode' => $viewMode === 'modal' ? 'dropdown' : 'modal'])) }}" class="button button-outline">
+        {{ $viewMode === 'modal' ? 'Use Dropdown UI' : 'نمایش به شکل پروفایل' }}
+    </a>
+</div>
 
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('[data-dropdown]')) {
-            document.querySelectorAll('[id^="dropdown-"]').forEach(menu => menu.classList.add('hidden'));
-        }
-    });
-</script>
+@if($members->isEmpty())
+    <div class="card">
+        <div class="card-body" style="text-align: center;">
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">عضوی یافت نشد</h3>
+            <p style="margin: 0 0 1.5rem 0; color: var(--text-muted);">جستجوی شما نتیجه ای نداشت.</p>
+            <a href="{{ route('members.create') }}" class="button">عضو اول را اضافه کنید</a>
+        </div>
+    </div>
+@else
+    <div style="display: grid; gap: 1.5rem;">
+        @foreach($members as $member)
+            <div class="card">
+                <div class="card-body">
+                    <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+                        <div style="flex-shrink: 0;">
+                            @if($member->photo)
+                                <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->name }}" style="width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover;" />
+                            @else
+                                <div style="width: 4rem; height: 4rem; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem;">
+                                    {{ strtoupper(substr($member->name, 0, 1)) }}
+                                </div>
+                            @endif
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                                <div>
+                                    <h3 style="margin: 0 0 0.25rem 0; font-size: 1.25rem; font-weight: 600;">{{ $member->name }}</h3>
+                                    <p style="margin: 0; color: var(--text-muted);">{{ $member->phone }} · {{ $member->email }}</p>
+                                </div>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    @if($member->expiry_date && $member->expiry_date->isFuture())
+                                        @if($member->expiry_date->diffInDays(now()) <= 3)
+                                            <span style="background-color: var(--warning); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">⏰ Expiring Soon</span>
+                                        @else
+                                            <span style="background-color: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">✅ Active</span>
+                                        @endif
+                                    @else
+                                        <span style="background-color: var(--danger); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">❌ Expired</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                <div>
+                                    <span style="color: var(--text-muted); font-size: 0.875rem;">پلان</span>
+                                    <p style="margin: 0.25rem 0 0 0; font-weight: 600;">{{ $member->plan->name ?? 'N/A' }}</p>
+                                </div>
+                                <div>
+                                    <span style="color: var(--text-muted); font-size: 0.875rem;">تاریخ انقضا</span>
+                                    <p style="margin: 0.25rem 0 0 0; font-weight: 600;">{{ $member->expiry_date?->format('M d, Y') ?? 'N/A' }}</p>
+                                </div>
+                                <div>
+                                    <span style="color: var(--text-muted); font-size: 0.875rem;">بدهی</span>
+                                    <p style="margin: 0.25rem 0 0 0; font-weight: 600; color: {{ $member->debt > 0 ? 'var(--danger)' : 'var(--success)' }};">AF {{ number_format($member->debt, 2) }}</p>
+                                </div>
+                                <div>
+                                    <span style="color: var(--text-muted); font-size: 0.875rem;">سطوح</span>
+                                    <p style="margin: 0.25rem 0 0 0; font-weight: 600;">{{ ucfirst($member->workout_level) }} / {{ ucfirst($member->diet_level) }}</p>
+                                </div>
+                            </div>
+
+                            <div class="button-group">
+                                <a href="{{ route('members.show', $member) }}" class="button">نمایش پروفایل</a>
+                                <a href="{{ route('ai.show-plans', $member) }}" class="button button-outline">نمایش پلان‌ها</a>
+                                <a href="{{ route('members.edit', $member) }}" class="button button-outline">ویرایش</a>
+                                <form action="{{ route('members.destroy', $member) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="button" style="background-color: var(--danger); border-color: var(--danger);" onclick="return confirm('Are you sure you want to delete this member?');">حذف</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+@endif
+
+<!-- Search and Filter Form -->
+<div class="card" style="margin-top: 2rem;">
+    <div class="card-header">
+        <h2 class="card-title">Search & Filter</h2>
+    </div>
+    <div class="card-body">
+        <form method="GET" action="{{ route('members.index') }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
+            @if($viewMode === 'modal')
+                <input type="hidden" name="view_mode" value="modal">
+            @endif
+
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Search</label>
+                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search by name, father's name, or phone" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px;" />
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filter</label>
+                <select name="filter" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px;">
+                    <option value="all" {{ ($filter ?? 'all') === 'all' ? 'selected' : '' }}>All Members</option>
+                    <option value="active" {{ ($filter ?? 'all') === 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="expired" {{ ($filter ?? 'all') === 'expired' ? 'selected' : '' }}>Expired</option>
+                    <option value="expiring_soon" {{ ($filter ?? 'all') === 'expiring_soon' ? 'selected' : '' }}>Expiring Soon</option>
+                    <option value="in_debt" {{ ($filter ?? 'all') === 'in_debt' ? 'selected' : '' }}>In Debt</option>
+                </select>
+            </div>
+
+            <div>
+                <button type="submit" class="button">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection

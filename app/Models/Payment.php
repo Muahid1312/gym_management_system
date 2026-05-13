@@ -16,11 +16,14 @@ class Payment extends Model
         'paid_at',
         'notes',
         'is_partial',
+        'partner_id',
+        'payment_method',
     ];
 
     protected $casts = [
         'paid_at' => 'datetime',
         'is_partial' => 'boolean',
+        'amount' => 'decimal:2',
     ];
 
     public function member()
@@ -31,5 +34,20 @@ class Payment extends Model
     public function plan()
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class);
+    }
+
+    public function receipt()
+    {
+        return $this->hasOne(Receipt::class);
+    }
+
+    public function commission()
+    {
+        return $this->hasOne(PartnerCommission::class);
     }
 }

@@ -2,20 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
-use App\Models\Payment;
-use App\Models\Plan;
+use App\Services\DashboardService;
+use App\Services\RiskDetectionService;
+use App\Services\FinancialReportService;
 
 class DashboardController extends Controller
 {
+    public function __construct(
+        private DashboardService $dashboardService,
+        private RiskDetectionService $riskService,
+        private FinancialReportService $financialService
+    ) {}
+
     public function index()
     {
+        $metrics = $this->dashboardService->getDashboardMetrics();
+        $quickStats = $this->dashboardService->getQuickStats();
+        $alerts = $this->dashboardService->getAlerts();
+
         return view('dashboard', [
-            'membersCount' => Member::count(),
-            'plansCount' => Plan::count(),
-            'paymentsCount' => Payment::count(),
-            'expiringSoon' => Member::whereBetween('expiry_date', [now()->toDateString(), now()->addDays(3)->toDateString()])->get(),
-            'expired' => Member::where('expiry_date', '<', now()->toDateString())->get(),
+            'metrics' => $metrics,
+            'quickStats' => $quickStats,
+            'alerts' => $alerts,
+            'expiringSoon' => $this->riskService->getMembersExpiringsoon(),
+            'withDebt' => $this->riskService->getMembersWithDebt(),
+            'inactive' => $this->riskService->getMembersInactive(),
+            'monthlyIncomeByDay' => $this->financialService->getMonthlyIncomeByDay(),
+            'incomeByPlan' => $this->financialService->getIncomeByPlan(),
         ]);
     }
 }

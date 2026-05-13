@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\LockerAssignment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -16,6 +17,7 @@ class Member extends Model
         'phone',
         'photo',
         'plan_id',
+        'partner_id',
         'join_date',
         'expiry_date',
         'workout_level',
@@ -26,6 +28,7 @@ class Member extends Model
     protected $casts = [
         'join_date' => 'date',
         'expiry_date' => 'date',
+        'debt' => 'decimal:2',
     ];
 
     public function payments()
@@ -36,6 +39,11 @@ class Member extends Model
     public function plan()
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class);
     }
 
     public function attendances()
@@ -51,6 +59,21 @@ class Member extends Model
     public function dietPlans()
     {
         return $this->hasMany(DietPlan::class);
+    }
+
+    public function lockerAssignment()
+    {
+        return $this->hasOne(LockerAssignment::class)->whereNull('returned_at');
+    }
+
+    public function lockerHistory()
+    {
+        return $this->hasMany(LockerAssignment::class);
+    }
+
+    public function receipts()
+    {
+        return $this->hasMany(Receipt::class);
     }
 
     public function extendExpiry(Plan $plan): void
