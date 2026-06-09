@@ -2,44 +2,48 @@
 
 @section('content')
     <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h1>{{ __('messages.reports') }}</h1>
+        <div class="flex items-center justify-between">
+            <h1 class="text-xl font-semibold">{{ __('messages.reports') }}</h1>
             <a class="button" href="{{ route('reports.export') }}">{{ __('messages.export_pdf') }}</a>
         </div>
-        <div class="grid">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             <div class="card">
-                <h3>Daily Income</h3>
-                <p>AF {{ number_format($dailyIncome, 2) }}</p>
+                <h3 class="text-sm text-slate-600">Daily Income</h3>
+                <p class="text-lg font-semibold">AF {{ number_format($dailyIncome, 2) }}</p>
             </div>
             <div class="card">
-                <h3>Monthly Income</h3>
-                <p>AF {{ number_format($monthlyIncome, 2) }}</p>
+                <h3 class="text-sm text-slate-600">Monthly Income</h3>
+                <p class="text-lg font-semibold">AF {{ number_format($monthlyIncome, 2) }}</p>
             </div>
             <div class="card">
-                <h3>{{ __('messages.active') }} Members</h3>
-                <p>{{ $activeMembers }}</p>
+                <h3 class="text-sm text-slate-600">{{ __('messages.active') }} Members</h3>
+                <p class="text-lg font-semibold">{{ $activeMembers }}</p>
             </div>
             <div class="card">
-                <h3>{{ __('messages.expired') }} Members</h3>
-                <p>{{ $expiredMembers }}</p>
+                <h3 class="text-sm text-slate-600">{{ __('messages.expired') }} Members</h3>
+                <p class="text-lg font-semibold">{{ $expiredMembers }}</p>
             </div>
         </div>
-        <h2>Members with Debt</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>{{ __('messages.name') }}</th>
-                    <th>{{ __('messages.debt') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($membersWithDebt as $member)
+
+        <h2 class="mt-6 text-lg font-semibold">Members with Debt</h2>
+        <div class="overflow-x-auto mt-3">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
                     <tr>
-                        <td>{{ $member['name'] }}</td>
-                        <td>AF {{ number_format($member['debt'], 2) }}</td>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.name') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('messages.debt') }}</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach($membersWithDebt as $member)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $member['name'] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">AF {{ number_format($member['debt'], 2) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection

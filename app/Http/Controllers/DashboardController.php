@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $quickStats = $this->dashboardService->getQuickStats();
         $alerts = $this->dashboardService->getAlerts();
 
-        return view('dashboard', [
+        return view('dashboard-modern', [
             'metrics' => $metrics,
             'quickStats' => $quickStats,
             'alerts' => $alerts,

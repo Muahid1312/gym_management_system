@@ -1,19 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.app-modern')
+
+@section('title', 'Plans')
 
 @section('content')
     <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h1>پلان ها</h1>
-            <a class="button" href="{{ route('plans.create') }}">اضافه کردن پلان جدید</a>
+            <h1>Plans</h1>
+            <a class="button" href="{{ route('plans.create') }}">Add plan</a>
         </div>
         <table>
             <thead>
                 <tr>
-                    <th>اسم</th>
-                    <th>قیمت</th>
-                    <th>مدت (روز)</th>
-                    <th>توضیحات</th>
-                    <th>عملکردها</th>
+                    <th>Name</th>
+                    <th>Value</th>
+                    <th>Durations(day)</th>
+                    <th>Description</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,11 +26,11 @@
                         <td>{{ $plan->duration_days }}</td>
                         <td>{{ $plan->description }}</td>
                         <td>
-                            <a class="btn" href="{{ route('plans.edit', $plan) }}">تصحیح</a>
+                            <a class="btn" href="{{ route('plans.edit', $plan) }}">Edit</a>
                             <form action="{{ route('plans.destroy', $plan) }}" method="POST" style="display:inline-block; margin-left: 8px;">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn" style="background:#dc2626;">حذف</button>
+                                <button class="btn" style="background:#dc2626;">Delete</button>
                             </form>
                         </td>
                     </tr>

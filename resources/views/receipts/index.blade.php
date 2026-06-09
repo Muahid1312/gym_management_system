@@ -1,10 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.app-modern')
+
+@section('title', 'Receipts')
 
 @section('content')
 <div class="container">
     <div class="card">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h1 class="page-title">بل رسید ها</h1>
+            <h1 class="page-title">Ricepts</h1>
             <a class="button" href="{{ route('payments.index') }}">Back to Payments</a>
         </div>
     </div>
@@ -14,13 +16,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>بل رسیدی #</th>
-                    <th>عضو</th>
-                    <th>مقدار پرداخت</th>
-                    <th>حساب باقی مانده</th>
-                    <th>روش پرداخت</th>
-                    <th>زمان</th>
-                    <th>عملکرد ها</th>
+                    <th>Ricept#</th>
+                    <th>Members</th>
+                    <th>Amount</th>
+                    <th>Remainder</th>
+                    <th>Payment Type</th>
+                    <th>Time</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,7 +35,7 @@
                         @if($receipt->remaining_balance > 0)
                             <span style="color: #fca5a5;">${{ number_format($receipt->remaining_balance, 2) }}</span>
                         @else
-                            <span style="color: #86efac;">پرداخت شده</span>
+                            <span style="color: #86efac;">Paid</span>
                         @endif
                     </td>
                     <td style="text-transform: capitalize;">{{ $receipt->payment_method }}</td>
@@ -56,7 +58,7 @@
     </div>
     @else
     <div class="card">
-        <p style="text-align: center; color: var(--muted);">بل رسیدی یافت نشد.</p>
+        <p style="text-align: center; color: var(--muted);">The Reciept dosen't recived!</p>
     </div>
     @endif
 </div>

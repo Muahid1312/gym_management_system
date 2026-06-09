@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app-modern')
 
-@section('title', 'برنامه‌های تمرینی و تغذیه')
+@section('title', 'Member Plans')
 
 @section('content')
 <div class="page-header">

@@ -1,128 +1,129 @@
-@extends('layouts.app')
+@extends('layouts.app-modern')
 
-@section('title', 'Members')
+@section('title', 'اعضا')
 
 @section('content')
 <div class="page-header">
     <h1 class="page-title">مدیریت اعضاء</h1>
-    <p class="page-subtitle">اعضای باشگاه خود را به یک انترفیس حرفه ای و یکپارچه  جستجو فیلتر و مدیریت کنید!</p>
+    <p class="page-subtitle">اعضای باشگاه خود را جستجو، فیلتر و مدیریت کنید</p>
 </div>
 
-<div class="button-group" style="margin-bottom: 2rem;">
-    <a href="{{ route('members.create') }}" class="button">عضو جدید</a>
-    <a href="{{ route('members.index', array_merge(request()->except('view_mode'), ['view_mode' => $viewMode === 'modal' ? 'dropdown' : 'modal'])) }}" class="button button-outline">
-        {{ $viewMode === 'modal' ? 'Use Dropdown UI' : 'نمایش به شکل پروفایل' }}
-    </a>
-</div>
+<!-- Search and Filter Bar -->
+<x-card class="mb-6">
+    <form method="GET" action="{{ route('members.index') }}" class="grid gap-4 md:grid-cols-4">
+        <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">جستجو</label>
+            <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="نام، تلفن یا ایمیل" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">فیلتر</label>
+            <select name="filter" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <option value="all" {{ ($filter ?? 'all') === 'all' ? 'selected' : '' }}>همه اعضا</option>
+                <option value="active" {{ ($filter ?? 'all') === 'active' ? 'selected' : '' }}>فعال</option>
+                <option value="expired" {{ ($filter ?? 'all') === 'expired' ? 'selected' : '' }}>منقضی شده</option>
+                <option value="expiring_soon" {{ ($filter ?? 'all') === 'expiring_soon' ? 'selected' : '' }}>در حال انقضا</option>
+                <option value="in_debt" {{ ($filter ?? 'all') === 'in_debt' ? 'selected' : '' }}>بدهکار</option>
+            </select>
+        </div>
+
+        <div class="flex gap-2 md:col-span-2">
+            <x-button type="submit" class="flex-1">🔍 جستجو</x-button>
+            <x-button type="button" variant="outline" onclick="window.location.href='{{ route('members.index') }}'" class="flex-1">↺ پاک کردن</x-button>
+        </div>
+    </form>
+</x-card>
 
 @if($members->isEmpty())
-    <div class="card">
-        <div class="card-body" style="text-align: center;">
-            <h3 style="margin: 0 0 1rem 0; font-size: 1.25rem; font-weight: 600;">عضوی یافت نشد</h3>
-            <p style="margin: 0 0 1.5rem 0; color: var(--text-muted);">جستجوی شما نتیجه ای نداشت.</p>
-            <a href="{{ route('members.create') }}" class="button">عضو اول را اضافه کنید</a>
-        </div>
-    </div>
+    <x-card class="text-center py-12">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">هیچ عضوی یافت نشد</h3>
+        <p class="text-slate-600 dark:text-slate-400 mb-6">نتیجه‌ای برای جستجوی شما موجود نیست.</p>
+        <x-button href="{{ route('members.create') }}">+ افزودن عضو جدید</x-button>
+    </x-card>
 @else
-    <div style="display: grid; gap: 1.5rem;">
-        @foreach($members as $member)
-            <div class="card">
-                <div class="card-body">
-                    <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
-                        <div style="flex-shrink: 0;">
-                            @if($member->photo)
-                                <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->name }}" style="width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover;" />
-                            @else
-                                <div style="width: 4rem; height: 4rem; border-radius: 50%; background-color: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem;">
-                                    {{ strtoupper(substr($member->name, 0, 1)) }}
-                                </div>
-                            @endif
-                        </div>
-                        <div style="flex: 1;">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
-                                <div>
-                                    <h3 style="margin: 0 0 0.25rem 0; font-size: 1.25rem; font-weight: 600;">{{ $member->name }}</h3>
-                                    <p style="margin: 0; color: var(--text-muted);">{{ $member->phone }} · {{ $member->email }}</p>
-                                </div>
-                                <div style="display: flex; gap: 0.5rem;">
-                                    @if($member->expiry_date && $member->expiry_date->isFuture())
-                                        @if($member->expiry_date->diffInDays(now()) <= 3)
-                                            <span style="background-color: var(--warning); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">⏰ Expiring Soon</span>
-                                        @else
-                                            <span style="background-color: var(--success); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">✅ Active</span>
-                                        @endif
+    <x-card class="overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">عضو</th>
+                        <th class="px-6 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">تماس</th>
+                        <th class="px-6 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">پلان</th>
+                        <th class="px-6 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">وضعیت</th>
+                        <th class="px-6 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">تاریخ انقضا</th>
+                        <th class="px-6 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">بدهی</th>
+                        <th class="px-6 py-3 text-left font-semibold text-slate-700 dark:text-slate-300">عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($members as $member)
+                        <tr class="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    @if($member->photo)
+                                        <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->name }}" class="w-10 h-10 rounded-full object-cover" />
                                     @else
-                                        <span style="background-color: var(--danger); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">❌ Expired</span>
+                                        <div class="w-10 h-10 rounded-full bg-sky-600 text-white flex items-center justify-center font-bold text-sm">
+                                            {{ strtoupper(substr($member->name, 0, 1)) }}
+                                        </div>
                                     @endif
+                                    <div>
+                                        <p class="font-semibold text-slate-900 dark:text-slate-100">{{ $member->name }}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </td>
+                            <td class="px-6 py-4 text-slate-600 dark:text-slate-400">
+                                <div class="text-sm">{{ $member->phone }}</div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400">{{ $member->email }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm font-medium">{{ $member->plan->name ?? 'بدون پلان' }}</span>
+                            </td>
+                            <td class="px-6 py-4">
+                                @if($member->expiry_date && $member->expiry_date->isFuture())
+                                    @if($member->expiry_date->diffInDays(now()) <= 3)
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">⏰ در حال انقضا</span>
+                                    @else
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">✅ فعال</span>
+                                    @endif
+                                @else
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">❌ منقضی</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
+                                {{ $member->expiry_date?->format('M d, Y') ?? 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="text-sm font-medium {{ $member->debt > 0 ? 'text-red-600' : 'text-emerald-600' }}">
+                                    AF {{ number_format($member->debt, 2) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <x-button href="{{ route('members.show', $member) }}" size="sm" variant="outline">مشاهده</x-button>
+                                    <x-button href="{{ route('members.edit', $member) }}" size="sm" variant="outline">ویرایش</x-button>
+                                    <form action="{{ route('members.destroy', $member) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <x-button type="submit" size="sm" variant="danger" onclick="return confirm('آیا مطمئن هستید؟');">حذف</x-button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </x-card>
 
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                                <div>
-                                    <span style="color: var(--text-muted); font-size: 0.875rem;">پلان</span>
-                                    <p style="margin: 0.25rem 0 0 0; font-weight: 600;">{{ $member->plan->name ?? 'N/A' }}</p>
-                                </div>
-                                <div>
-                                    <span style="color: var(--text-muted); font-size: 0.875rem;">تاریخ انقضا</span>
-                                    <p style="margin: 0.25rem 0 0 0; font-weight: 600;">{{ $member->expiry_date?->format('M d, Y') ?? 'N/A' }}</p>
-                                </div>
-                                <div>
-                                    <span style="color: var(--text-muted); font-size: 0.875rem;">بدهی</span>
-                                    <p style="margin: 0.25rem 0 0 0; font-weight: 600; color: {{ $member->debt > 0 ? 'var(--danger)' : 'var(--success)' }};">AF {{ number_format($member->debt, 2) }}</p>
-                                </div>
-                                <div>
-                                    <span style="color: var(--text-muted); font-size: 0.875rem;">سطوح</span>
-                                    <p style="margin: 0.25rem 0 0 0; font-weight: 600;">{{ ucfirst($member->workout_level) }} / {{ ucfirst($member->diet_level) }}</p>
-                                </div>
-                            </div>
-
-                            <div class="button-group">
-                                <a href="{{ route('members.show', $member) }}" class="button">نمایش پروفایل</a>
-                                <a href="{{ route('ai.show-plans', $member) }}" class="button button-outline">نمایش پلان‌ها</a>
-                                <a href="{{ route('members.edit', $member) }}" class="button button-outline">ویرایش</a>
-                                <form action="{{ route('members.destroy', $member) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="button" style="background-color: var(--danger); border-color: var(--danger);" onclick="return confirm('Are you sure you want to delete this member?');">حذف</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
+    @if($members->hasPages())
+        <div class="mt-6 flex justify-center">
+            {{ $members->links() }}
+        </div>
+    @endif
 @endif
 
-<!-- Search and Filter Form -->
-<div class="card" style="margin-top: 2rem;">
-    <div class="card-header">
-        <h2 class="card-title">Search & Filter</h2>
-    </div>
-    <div class="card-body">
-        <form method="GET" action="{{ route('members.index') }}" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
-            @if($viewMode === 'modal')
-                <input type="hidden" name="view_mode" value="modal">
-            @endif
-
-            <div>
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Search</label>
-                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search by name, father's name, or phone" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px;" />
-            <div>
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filter</label>
-                <select name="filter" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px;">
-                    <option value="all" {{ ($filter ?? 'all') === 'all' ? 'selected' : '' }}>All Members</option>
-                    <option value="active" {{ ($filter ?? 'all') === 'active' ? 'selected' : '' }}>Active</option>
-                    <option value="expired" {{ ($filter ?? 'all') === 'expired' ? 'selected' : '' }}>Expired</option>
-                    <option value="expiring_soon" {{ ($filter ?? 'all') === 'expiring_soon' ? 'selected' : '' }}>Expiring Soon</option>
-                    <option value="in_debt" {{ ($filter ?? 'all') === 'in_debt' ? 'selected' : '' }}>In Debt</option>
-                </select>
-            </div>
-
-            <div>
-                <button type="submit" class="button">Search</button>
-            </div>
-        </form>
-    </div>
+<div class="mt-6">
+    <x-button href="{{ route('members.create') }}">+ عضو جدید</x-button>
 </div>
 @endsection

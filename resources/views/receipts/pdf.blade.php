@@ -30,7 +30,7 @@
             border: 1px solid #ddd;
         }
         .header {
-            text-align: center;
+            text-align: left;
             border-bottom: 2px solid #f97316;
             padding-bottom: 20px;
             margin-bottom: 30px;
@@ -45,6 +45,7 @@
             font-size: 12px;
             color: #666;
             line-height: 1.6;
+            text-align: left;
         }
         .receipt-number {
             text-align: center;

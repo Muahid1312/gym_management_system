@@ -30,7 +30,7 @@
                             <input
                                 id="search"
                                 name="search"
-                                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                class="block w-full pl-10 pr-3 py-2 border border-slate-300 rounded-2xl leading-5 bg-white placeholder-slate-500 focus:outline-none focus:placeholder-slate-400 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm"
                                 placeholder="Search..."
                                 type="search"
                             >
@@ -45,7 +45,7 @@
                     <div class="ml-4 relative" x-data="{ open: false }">
                         <button
                             @click="open = !open"
-                            class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            class="bg-white p-2 rounded-2xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
                         >
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.868 12.683A17.925 17.925 0 0112 21c7.962 0 12-1.21 12-2.683m-12 2.683a17.925 17.925 0 01-7.132-8.317M12 21V9m0 0a3 3 0 110-6 3 3 0 010 6z"/>
@@ -62,9 +62,9 @@
                             x-transition:leave="transition ease-in duration-75"
                             x-transition:leave-start="transform opacity-100 scale-100"
                             x-transition:leave-end="transform opacity-0 scale-95"
-                            class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10"
+                            class="origin-top-right absolute right-0 mt-2 w-80 rounded-3xl shadow-2xl bg-white ring-1 ring-slate-200 ring-opacity-50 z-10"
                         >
-                            <div class="py-1">
+                            <div class="py-2">
                                 <div class="px-4 py-2 border-b border-gray-200">
                                     <h3 class="text-sm font-medium text-gray-900">Notifications</h3>
                                 </div>

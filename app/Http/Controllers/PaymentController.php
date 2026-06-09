@@ -16,8 +16,8 @@ class PaymentController extends Controller
     }
     public function index()
     {
-        return view('payments.index', [
-            'payments' => Payment::with(['member', 'plan', 'partner'])->orderByDesc('paid_at')->get(),
+        return view('payments-modern', [
+            'payments' => Payment::with(['member', 'plan', 'partner'])->orderByDesc('paid_at')->paginate(10),
         ]);
     }
 

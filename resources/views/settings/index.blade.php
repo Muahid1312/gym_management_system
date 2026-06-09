@@ -1,28 +1,28 @@
-@extends('layouts.app')
+@extends('layouts.app-modern')
 
 @section('content')
 @php
     $activeSection = $activeSection ?? request('section', 'general');
 @endphp
 
-<div class="min-h-screen bg-slate-50">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900">
     <div class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
-        <div class="mb-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+        <div class="mb-8 rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-8 shadow-sm">
             <div class="sm:flex sm:items-center sm:justify-between sm:gap-6">
                 <div>
-                    <p class="text-sm uppercase tracking-[0.3em] text-slate-500">{{ __('messages.control_panel') }}</p>
-                    <h1 class="mt-3 text-3xl font-semibold text-slate-900">{{ __('messages.settings') }}</h1>
-                    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                    <p class="text-sm uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{{ __('messages.control_panel') }}</p>
+                    <h1 class="mt-3 text-3xl font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.settings') }}</h1>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
                         {{ __('messages.settings_description') }}
                     </p>
                 </div>
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <a href="{{ route('backups.index') }}" class="inline-flex items-center rounded-3xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-200">
+                    <a href="{{ route('backups.index') }}" class="inline-flex items-center rounded-3xl bg-slate-100 dark:bg-slate-700 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 transition hover:bg-slate-200 dark:hover:bg-slate-600">
                         {{ __('messages.backup_manager') }}
                     </a>
-                    <div class="rounded-3xl border border-slate-200 bg-white p-5 text-sm text-slate-700 shadow-sm">
-                        <label for="localeSelector" class="block text-sm font-medium text-slate-700">{{ __('messages.language') }}</label>
-                        <select id="localeSelector" onchange="window.location.href = this.value" class="mt-2 block w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-sky-500 focus:ring-sky-500">
+                    <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 text-sm text-slate-700 dark:text-slate-300 shadow-sm">
+                        <label for="localeSelector" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('messages.language') }}</label>
+                        <select id="localeSelector" onchange="window.location.href = this.value" class="mt-2 block w-full rounded-3xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-3 text-slate-900 dark:text-slate-100 shadow-sm focus:border-sky-500 focus:ring-sky-500">
                             <option value="{{ route('locale.switch', 'fa') }}" {{ app()->getLocale() === 'fa' ? 'selected' : '' }}>{{ __('messages.language_fa') }}</option>
                             <option value="{{ route('locale.switch', 'en') }}" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>{{ __('messages.language_en') }}</option>
                         </select>
@@ -33,8 +33,8 @@
 
         <div class="grid gap-6 lg:grid-cols-[260px_1fr]">
             <aside class="space-y-5">
-                <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <h2 class="text-base font-semibold text-slate-900">{{ __('messages.sections_label') }}</h2>
+                <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+                    <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.sections_label') }}</h2>
                     <nav class="mt-5 space-y-2">
                         @php
                             $tabs = [
@@ -47,16 +47,16 @@
                             ];
                         @endphp
                         @foreach ($tabs as $key => $label)
-                            <a href="{{ route('settings.index', ['section' => $key]) }}" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium transition {{ $activeSection === $key ? 'bg-slate-100 text-slate-900 shadow-sm' : 'text-slate-600 hover:bg-slate-50' }}">
+                            <a href="{{ route('settings.index', ['section' => $key]) }}" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium transition {{ $activeSection === $key ? 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50' }}">
                                 <span>{{ $label }}</span>
-                                <span class="text-slate-400">→</span>
+                                <span class="text-slate-400 dark:text-slate-500">→</span>
                             </a>
                         @endforeach
                     </nav>
                 </div>
-                <div class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <h3 class="text-sm font-semibold text-slate-900">{{ __('messages.quick_tips_label') }}</h3>
-                    <ul class="mt-4 space-y-3 text-sm text-slate-600">
+                <div class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
+                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.quick_tips_label') }}</h3>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-400">
                         <li>{{ __('messages.quick_tips_gym_name') }}</li>
                         <li>{{ __('messages.quick_tips_currency') }}</li>
                         <li>{{ __('messages.quick_tips_backup') }}</li>
@@ -66,37 +66,37 @@
 
             <main class="space-y-6">
                 @if(session('success'))
-                    <div class="rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900 shadow-sm">
+                    <div class="rounded-3xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-900/20 p-5 text-sm text-emerald-900 dark:text-emerald-400 shadow-sm">
                         {{ session('success') }}
                     </div>
                 @endif
 
-                <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm {{ $activeSection !== 'general' ? 'hidden' : '' }}" id="section-general">
+                <section class="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 shadow-sm {{ $activeSection !== 'general' ? 'hidden' : '' }}" id="section-general">
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <h2 class="text-xl font-semibold text-slate-900">{{ __('messages.general_settings') }}</h2>
-                            <p class="mt-2 text-sm text-slate-600">{{ __('messages.manage_identity') }}</p>
+                            <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">{{ __('messages.general_settings') }}</h2>
+                            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">{{ __('messages.manage_identity') }}</p>
                         </div>
-                        <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">{{ __('messages.brand') }}</span>
+                        <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-700 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 dark:text-slate-300">{{ __('messages.brand') }}</span>
                     </div>
 
                     <form action="{{ route('settings.updateGymInfo') }}" method="POST" enctype="multipart/form-data" class="mt-6 space-y-6">
                         @csrf
                         <div class="grid gap-5 lg:grid-cols-2">
                             <div>
-                                <label for="gym_name" class="block text-sm font-medium text-slate-700">{{ __('messages.gym_name') }}</label>
-                                <input id="gym_name" name="gym_name" type="text" value="{{ old('gym_name', $gymInfo->gym_name) }}" class="mt-2 block w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-sky-500 focus:ring-sky-500" required>
-                                @error('gym_name')<p class="mt-2 text-sm text-rose-600">{{ $message }}</p>@enderror
+                                <label for="gym_name" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('messages.gym_name') }}</label>
+                                <input id="gym_name" name="gym_name" type="text" value="{{ old('gym_name', $gymInfo->gym_name) }}" class="mt-2 block w-full rounded-3xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-3 text-slate-900 dark:text-slate-100 shadow-sm focus:border-sky-500 focus:ring-sky-500" required>
+                                @error('gym_name')<p class="mt-2 text-sm text-rose-600 dark:text-rose-400">{{ $message }}</p>@enderror
                             </div>
                             <div>
-                                <label for="address" class="block text-sm font-medium text-slate-700">{{ __('messages.address') }}</label>
-                                <input id="address" name="address" type="text" value="{{ old('address', $gymInfo->address) }}" class="mt-2 block w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-sky-500 focus:ring-sky-500" required>
-                                @error('address')<p class="mt-2 text-sm text-rose-600">{{ $message }}</p>@enderror
+                                <label for="address" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('messages.address') }}</label>
+                                <input id="address" name="address" type="text" value="{{ old('address', $gymInfo->address) }}" class="mt-2 block w-full rounded-3xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-3 text-slate-900 dark:text-slate-100 shadow-sm focus:border-sky-500 focus:ring-sky-500" required>
+                                @error('address')<p class="mt-2 text-sm text-rose-600 dark:text-rose-400">{{ $message }}</p>@enderror
                             </div>
                             <div>
-                                <label for="phone" class="block text-sm font-medium text-slate-700">{{ __('messages.phone') }}</label>
-                                <input id="phone" name="phone" type="tel" value="{{ old('phone', $gymInfo->phone) }}" class="mt-2 block w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm focus:border-sky-500 focus:ring-sky-500" required>
-                                @error('phone')<p class="mt-2 text-sm text-rose-600">{{ $message }}</p>@enderror
+                                <label for="phone" class="block text-sm font-medium text-slate-700 dark:text-slate-300">{{ __('messages.phone') }}</label>
+                                <input id="phone" name="phone" type="tel" value="{{ old('phone', $gymInfo->phone) }}" class="mt-2 block w-full rounded-3xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-3 text-slate-900 dark:text-slate-100 shadow-sm focus:border-sky-500 focus:ring-sky-500" required>
+                                @error('phone')<p class="mt-2 text-sm text-rose-600 dark:text-rose-400">{{ $message }}</p>@enderror
                             </div>
                             <div>
                                 <label for="email" class="block text-sm font-medium text-slate-700">{{ __('messages.email') }}</label>

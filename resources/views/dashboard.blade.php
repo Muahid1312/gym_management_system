@@ -12,14 +12,14 @@
 @if(!empty($quickStats))
 <div class="grid">
     @foreach($quickStats as $stat)
-    <div class="stat-card">
+    <div class="card">
         <div class="stat-card-content">
             <div class="stat-icon">
                 {!! $stat['icon'] !!}
             </div>
             <div class="stat-info">
-                <h3>{{ $stat['label'] }}</h3>
-                <p>{{ $stat['value'] }}</p>
+                <h3 style="margin:0">{{ $stat['label'] }}</h3>
+                <p style="margin:4px 0 0 0;font-weight:700">{{ $stat['value'] }}</p>
             </div>
         </div>
     </div>
@@ -46,8 +46,8 @@
                 @endif
             </svg>
             <div>
-                <h4 style="margin: 0 0 4px; font-weight: 600;">{{ $alert['title'] }}</h4>
-                <p style="margin: 0 0 8px; font-size: 0.9rem;">{{ $alert['message'] }}</p>
+                <h4 style="margin: 0 0 4px; font-weight: 600; color: var(--text);">{{ $alert['title'] }}</h4>
+                <p style="margin: 0 0 8px; font-size: 0.9rem; color: var(--muted);">{{ $alert['message'] }}</p>
                 <a href="{{ $alert['action_url'] }}" class="button button-outline" style="font-size: 0.85rem; padding: 6px 12px;">مشاهده جزئیات</a>
             </div>
         </div>
@@ -57,7 +57,7 @@
 @endif
 
 <!-- Detailed Metrics -->
-<div class="grid" style="grid-template-columns: 1fr 1fr;">
+<div class="grid" style="grid-template-columns: 1fr 1fr; gap:16px;">
     <!-- Members Overview -->
     <div class="card">
         <div class="card-header">
@@ -95,26 +95,26 @@
         <div style="display: grid; gap: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
                 <span style="color: var(--muted);">درآمد امروز</span>
-                <span style="font-weight: 600; color: var(--success); font-size: 1.1rem;">AF {{ number_format($metrics['financial']['today_income'], 2) }}</span>
+                <span style="font-weight: 600; color: var(--success); font-size: 1.1rem;">{{ number_format($metrics['financial']['today_income'], 2) }} افغانی</span>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
                 <span style="color: var(--muted);">درآمد ماهانه</span>
-                <span style="font-weight: 600; color: var(--success); font-size: 1.1rem;">AF {{ number_format($metrics['financial']['monthly_income'], 2) }}</span>
+                <span style="font-weight: 600; color: var(--success); font-size: 1.1rem;">{{ number_format($metrics['financial']['monthly_income'], 2) }} افغانی</span>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
                 <span style="color: var(--muted);">کل بدهی معوق</span>
-                <span style="font-weight: 600; color: var(--danger); font-size: 1.1rem;">AF {{ number_format($metrics['financial']['total_outstanding_debt'], 2) }}</span>
+                <span style="font-weight: 600; color: var(--danger); font-size: 1.1rem;">{{ number_format($metrics['financial']['total_outstanding_debt'], 2) }} افغانی</span>
             </div>
             <div style="padding: 16px; background: var(--surface-soft); border-radius: 8px;">
                 <p style="margin: 0 0 12px; color: var(--muted); font-size: 0.9rem; font-weight: 600;">آمار بدهی:</p>
                 <div style="display: grid; gap: 8px; font-size: 0.9rem;">
                     <div style="display: flex; justify-content: space-between;">
                         <span style="color: var(--muted);">میانگین بدهی هر عضو</span>
-                        <span style="color: var(--text); font-weight: 600;">AF {{ number_format($metrics['financial']['debt_stats']['average_debt_per_member'], 2) }}</span>
+                        <span style="color: var(--text); font-weight: 600;">{{ number_format($metrics['financial']['debt_stats']['average_debt_per_member'], 2) }} افغانی</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <span style="color: var(--muted);">بالاترین بدهی</span>
-                        <span style="color: var(--text); font-weight: 600;">AF {{ number_format($metrics['financial']['debt_stats']['highest_debt'], 2) }}</span>
+                        <span style="color: var(--text); font-weight: 600;">{{ number_format($metrics['financial']['debt_stats']['highest_debt'], 2) }} افغانی</span>
                     </div>
                 </div>
             </div>
@@ -209,7 +209,7 @@
             <div style="display: grid; gap: 8px; font-size: 0.9rem;">
                 <div style="display: flex; justify-content: space-between;">
                     <span style="color: var(--muted);">کل درآمد:</span>
-                    <span style="color: var(--success); font-weight: 600;">AF {{ number_format($plan['total_income'], 2) }}</span>
+                    <span style="color: var(--success); font-weight: 600;">{{ number_format($plan['total_income'], 2) }} افغانی</span>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <span style="color: var(--muted);">پرداخت‌ها:</span>

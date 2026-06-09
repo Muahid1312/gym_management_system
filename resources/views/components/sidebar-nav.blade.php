@@ -13,10 +13,10 @@
             <div x-data="{ open: {{ $isActive ? 'true' : 'false' }} }">
                 <button
                     @click="open = !open"
-                    class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {{ $isActive ? 'bg-blue-100 text-blue-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                    class="w-full flex items-center px-4 py-3 text-sm font-semibold rounded-2xl transition-all duration-200 {{ $isActive ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg shadow-orange-200' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}"
                 >
                     @if(isset($item['icon']))
-                        <span class="mr-3">{{ $item['icon'] }}</span>
+                        <span class="mr-3 text-slate-500">{{ $item['icon'] }}</span>
                     @endif
                     <span class="flex-1 text-left">{{ $item['label'] }}</span>
                     <svg class="ml-2 h-4 w-4 transition-transform duration-200" :class="open ? 'rotate-90' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@
 
                         <a
                             href="{{ $childUrl }}"
-                            class="block px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {{ $childIsActive ? 'bg-blue-100 text-blue-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                            class="block px-4 py-2 text-sm font-medium rounded-2xl transition-all duration-200 {{ $childIsActive ? 'bg-orange-50 text-orange-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}"
                         >
                             @if(isset($child['icon']))
                                 <span class="mr-3">{{ $child['icon'] }}</span>
@@ -47,7 +47,7 @@
         @else
             <a
                 href="{{ $url }}"
-                class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {{ $isActive ? 'bg-blue-100 text-blue-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
+                class="flex items-center px-4 py-3 text-sm font-semibold rounded-2xl transition-all duration-200 {{ $isActive ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-lg shadow-orange-200' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}"
             >
                 @if(isset($item['icon']))
                     <span class="mr-3">{{ $item['icon'] }}</span>

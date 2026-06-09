@@ -261,32 +261,32 @@
         <div class="header">
             <div class="gym-logo-section">
                 @if(isset($gymInfo) && $gymInfo->logo_path)
-                    <img src="{{ $gymInfo->getLogoUrl() }}" alt="لوگو" class="gym-logo">
+                    <img src="{{ $gymInfo->getLogoUrl() }}" alt="Logo" class="gym-logo">
                 @endif
             </div>
             <div class="gym-name">{{ isset($gymInfo) ? persian_pdf_shape((string)$gymInfo->gym_name) : persian_pdf_shape('سیستم مدیریت باشگاه') }}</div>
-            <div class="header-subtitle">{{ persian_pdf_shape('پلان فیتنس و تغذیه') }}</div>
+            <div class="header-subtitle">{{ persian_pdf_shape('Fitness and diet plans') }}</div>
             <div class="header-date">{{ now()->format('d/m/Y') }}</div>
         </div>
 
         <!-- ===== MEMBER INFORMATION ===== -->
         <div class="member-section">
-            <div class="section-title">{{ persian_pdf_shape('اطلاعات عضو') }}</div>
+            <div class="section-title">{{ persian_pdf_shape('Member info') }}</div>
             <div class="member-grid">
                 <div class="member-item">
-                    <div class="member-label">{{ persian_pdf_shape('نام') }}</div>
+                    <div class="member-label">{{ persian_pdf_shape('Name') }}</div>
                     <div class="member-value">{{ persian_pdf_shape((string)$member->name) }}</div>
                 </div>
                 <div class="member-item">
-                    <div class="member-label">{{ persian_pdf_shape('سن') }}</div>
+                    <div class="member-label">{{ persian_pdf_shape('Age') }}</div>
                     <div class="member-value">{{ $workoutPlan->age ?? 'N/A' }} {{ persian_pdf_shape('سال') }}</div>
                 </div>
                 <div class="member-item">
-                    <div class="member-label">{{ persian_pdf_shape('وزن') }}</div>
-                    <div class="member-value">{{ $workoutPlan->weight ?? 'N/A' }} {{ persian_pdf_shape('کیلوگرم') }}</div>
+                    <div class="member-label">{{ persian_pdf_shape('Weight') }}</div>
+                    <div class="member-value">{{ $workoutPlan->weight ?? 'N/A' }} {{ persian_pdf_shape('Kg') }}</div>
                 </div>
                 <div class="member-item">
-                    <div class="member-label">{{ persian_pdf_shape('هدف') }}</div>
+                    <div class="member-label">{{ persian_pdf_shape('Goal') }}</div>
                     <div class="member-value">
                         @php
                             $goalTranslations = [

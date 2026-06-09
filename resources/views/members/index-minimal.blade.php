@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app-modern')
 
 @section('title', __('messages.members'))
 
@@ -15,35 +15,38 @@
 </div>
 
 <!-- Search and Filters -->
-<div class="card" style="margin-bottom: 24px;">
-    <div class="card-body">
-        <form method="GET" action="{{ route('members.index') }}" style="display: grid; grid-template-columns: 1fr auto auto; gap: 16px; align-items: end;">
-            <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label">جستجو</label>
-                <input type="text" class="form-input" name="search" placeholder="Search by name, email, or phone..." value="{{ $search ?? '' }}">
-            </div>
-            <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label">وضعیت</label>
-                <select class="form-input" name="filter">
-                    <option value="all" {{ ($filter ?? 'all') === 'all' ? 'selected' : '' }}>همه وضعیت‌ها</option>
-                    <option value="active" {{ ($filter ?? 'all') === 'active' ? 'selected' : '' }}>فعال</option>
-                    <option value="expired" {{ ($filter ?? 'all') === 'expired' ? 'selected' : '' }}>منقضی شده</option>
-                    <option value="expiring_soon" {{ ($filter ?? 'all') === 'expiring_soon' ? 'selected' : '' }}>در حال انقضا</option>
-                    <option value="in_debt" {{ ($filter ?? 'all') === 'in_debt' ? 'selected' : '' }}>بدهکار</option>
-                </select>
-            </div>
-            <button type="submit" class="btn">اعمال فیلترها</button>
-        </form>
-    </div>
-</div>
+<x-card class="mb-6">
+    <form method="GET" action="{{ route('members.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+        <div>
+            <label class="form-label">جستجو</label>
+            <input type="text" class="form-input" name="search" placeholder="Search by name, email, or phone..." value="{{ $search ?? '' }}">
+        </div>
+
+        <div>
+            <label class="form-label">وضعیت</label>
+            <select class="form-input" name="filter">
+                <option value="all" {{ ($filter ?? 'all') === 'all' ? 'selected' : '' }}>همه وضعیت‌ها</option>
+                <option value="active" {{ ($filter ?? 'all') === 'active' ? 'selected' : '' }}>فعال</option>
+                <option value="expired" {{ ($filter ?? 'all') === 'expired' ? 'selected' : '' }}>منقضی شده</option>
+                <option value="expiring_soon" {{ ($filter ?? 'all') === 'expiring_soon' ? 'selected' : '' }}>در حال انقضا</option>
+                <option value="in_debt" {{ ($filter ?? 'all') === 'in_debt' ? 'selected' : '' }}>بدهکار</option>
+            </select>
+        </div>
+
+        <div class="flex gap-2">
+            <x-button href="{{ route('members.index') }}" variant="outline">اعمال فیلترها</x-button>
+        </div>
+    </form>
+</x-card>
 
 <!-- Members Table -->
-<div class="card">
-    <div class="card-header">
-        Members ({{ $members->count() }} total)
+<x-card>
+    <div class="flex items-center justify-between mb-4">
+        <div class="text-sm text-slate-600">Members ({{ $members->count() }} total)</div>
+        <div></div>
     </div>
-    <div class="card-body" style="padding: 0;">
-        <table class="table">
+
+    <x-table>
             <thead>
                 <tr>
                     <th>عضو</th>
@@ -59,12 +62,12 @@
                 <tr>
                     <td>
                         <div class="flex items-center gap-3">
-                            <div style="width: 32px; height: 32px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px;">
+                            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
                                 {{ strtoupper(substr($member->name, 0, 1)) }}
                             </div>
                             <div>
-                                <p style="margin: 0; font-weight: 500;">{{ $member->name }}</p>
-                                <p style="margin: 0; font-size: 12px; color: var(--text-muted);">{{ $member->email }}</p>
+                                <p class="m-0 font-medium">{{ $member->name }}</p>
+                                <p class="m-0 text-xs text-slate-500">{{ $member->email }}</p>
                             </div>
                         </div>
                     </td>
@@ -84,26 +87,21 @@
                     <td>{{ $member->expiry_date?->format('M d, Y') ?? 'N/A' }}</td>
                     <td>
                         <div class="flex gap-2">
-                            <a href="{{ route('members.show', $member) }}" class="btn-outline" style="padding: 4px 8px; font-size: 12px;">دیدن</a>
-                            <a href="{{ route('ai.show-plans-minimal', $member) }}" class="btn-outline" style="padding: 4px 8px; font-size: 12px;">
-                                <svg class="icon" fill="currentColor" viewBox="0 0 20 20" style="width: 12px; height: 12px;">
-                                    <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                پلان ها
-                            </a>
-                            <a href="{{ route('members.edit', $member) }}" class="btn-outline" style="padding: 4px 8px; font-size: 12px;">ویرایش</a>
+                            <x-button href="{{ route('members.show', $member) }}" variant="outline" size="sm">دیدن</x-button>
+                            <x-button href="{{ route('ai.show-plans-minimal', $member) }}" variant="ghost" size="sm">پلان ها</x-button>
+                            <x-button href="{{ route('members.edit', $member) }}" variant="outline" size="sm">ویرایش</x-button>
                         </div>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" style="text-align: center; padding: 48px; color: var(--text-muted);">
-                        <svg width="48" height="48" fill="currentColor" viewBox="0 0 20 20" style="margin: 0 auto 16px; opacity: 0.5;">
+                    <td colspan="6" class="text-center py-12 text-slate-500">
+                        <svg width="48" height="48" fill="currentColor" viewBox="0 0 20 20" class="mx-auto mb-4 opacity-50">
                             <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        <p style="margin: 0; font-size: 16px;">عضوی یافت نشد</p>
-                        <p style="margin: 8px 0 24px 0; font-size: 14px;">عبارت جستجو با فیلتر را تغییر دهید</p>
-                        <a href="{{ route('members.create') }}" class="btn">اضافه کردن عضو جدید</a>
+                        <p class="text-base">عضوی یافت نشد</p>
+                        <p class="text-sm mt-2 mb-4">عبارت جستجو با فیلتر را تغییر دهید</p>
+                        <x-button href="{{ route('members.create') }}">اضافه کردن عضو جدید</x-button>
                     </td>
                 </tr>
                 @endforelse

@@ -1,11 +1,66 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'fa' ? 'rtl' : 'ltr' }}">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'سیستم مدیریت باشگاه') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        /* Design system - strict */
+        :root{
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-24: 24px;
+            --color-primary: #0f5cff;
+            --color-success: #10b981;
+            --color-danger: #ef4444;
+            --color-bg: #ffffff;
+            --color-border: #e5e7eb;
+            --text: #0f172a;
+            --muted: #64748b;
+            --font-family: 'Vazir', sans-serif;
+            --title-size: 18px;
+            --subtitle-size: 14px;
+            --text-size: 12px;
+        }
+
+        html,body{font-family:var(--font-family);direction:rtl;background:var(--color-bg);color:var(--text);font-size:var(--text-size);} 
+
+        /* layout skeleton */
+        .sidebar{width:280px;background:var(--color-bg);border-left:1px solid var(--color-border);position:fixed;right:0;top:0;bottom:0;padding:var(--space-24);} 
+        .main-content{margin-right:280px;min-height:100vh}
+        .navbar{height:56px;padding:0 var(--space-24);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--color-border);background:var(--color-bg)}
+        .container{max-width:1200px;margin:0 auto;padding:var(--space-24)}
+
+        /* consistent spacing helpers */
+        .p-12{padding:var(--space-12)}
+        .mt-16{margin-top:var(--space-16)}
+        .mb-16{margin-bottom:var(--space-16)}
+
+        /* simple utilities */
+        .text-muted{color:var(--muted)}
+        .small{font-size:0.875rem}
+
+        /* table defaults */
+        table{width:100%;border-collapse:collapse;font-size:var(--text-size);}
+        th,td{padding:var(--space-12);text-align:right;border-bottom:1px solid var(--color-border)}
+        tr:hover td{background:#f8fafc}
+
+        /* buttons */
+        .btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:8px;border:1px solid transparent;background:var(--color-primary);color:#fff;font-weight:600}
+        .btn-outline{background:transparent;color:var(--color-primary);border:1px solid rgba(15,92,255,0.12)}
+        .btn-danger{background:var(--color-danger)}
+        .btn-success{background:var(--color-success)}
+
+        /* avatar */
+        .user-avatar{width:36px;height:36px;border-radius:50%;background:var(--color-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+        /* card */
+        .card{background:var(--color-bg);border:1px solid var(--color-border);border-radius:12px;padding:var(--space-16);box-shadow:none}
+
+    </style>
     <style>
         :root {
             color-scheme: light;
@@ -799,6 +854,23 @@
         .hidden {
             display: none !important;
         }
+
+        /* Utility classes for member list */
+        .member-row { display: flex; gap: 1rem; align-items: flex-start; }
+        .avatar-col { flex-shrink: 0; }
+        .avatar-xl { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; display: block; }
+        .user-initial { width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: #fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.25rem; }
+        .member-meta { flex: 1; }
+        .member-title-row { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; }
+        .member-title { margin: 0 0 0.25rem 0; font-size: 1.1rem; font-weight: 700; }
+        .member-subtext { margin: 0; color: var(--muted); }
+        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 12px; }
+        .meta-value { margin: 0.25rem 0 0 0; font-weight: 600; }
+        .mt-4 { margin-top: 1rem; }
+        .text-muted { color: var(--muted); }
+        .small { font-size: 0.875rem; }
+        .text-success { color: var(--success) !important; }
+        .text-danger { color: var(--danger) !important; }
 
         #offlineBanner {
             margin-bottom: 1rem;

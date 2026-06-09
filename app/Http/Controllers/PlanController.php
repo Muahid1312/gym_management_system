@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,13 @@ class PlanController extends Controller
     {
         return view('plans.index', [
             'plans' => Plan::orderBy('duration_days')->get(),
+        ]);
+    }
+
+    public function generator()
+    {
+        return view('plans.generator', [
+            'members' => Member::orderBy('name')->get(),
         ]);
     }
 

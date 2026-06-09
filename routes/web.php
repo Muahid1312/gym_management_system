@@ -15,6 +15,7 @@ Route::get('/loading-demo', function () {
 })->name('loading.demo');
 
 Route::resource('plans', \App\Http\Controllers\PlanController::class)->except(['show']);
+Route::get('generator', [\App\Http\Controllers\PlanController::class, 'generator'])->name('plans.generator');
 Route::resource('members', \App\Http\Controllers\MemberController::class);
 Route::get('members-minimal', function () {
     $search = request('search');
@@ -52,7 +53,11 @@ Route::get('members-minimal', function () {
 
     return view('members.index-minimal', compact('members', 'search', 'filter'));
 })->name('members.index-minimal');
-Route::resource('payments', \App\Http\Controllers\PaymentController::class)->only(['index', 'create', 'store']);
+Route::resource('payments', \App\Http\Controllers\PaymentController::class);
+// Trainers modern view route (modern UI)
+Route::get('trainers', function () {
+    return view('trainers-modern');
+})->name('trainers.index');
 Route::resource('receipts', \App\Http\Controllers\ReceiptController::class)->only(['index', 'show']);
 Route::resource('partners', \App\Http\Controllers\PartnerController::class);
 Route::resource('lockers', \App\Http\Controllers\LockerController::class)->except(['show']);

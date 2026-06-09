@@ -41,10 +41,10 @@ class MemberController extends Controller
             default => null,
         };
 
-        $members = $query->orderBy('name')->get();
+        $members = $query->orderBy('name')->paginate(10);
         $viewMode = $request->input('view_mode', 'dropdown');
 
-        return view($viewMode === 'modal' ? 'members.index-modal' : 'members.index', [
+        return view('members.index', [
             'members' => $members,
             'filter' => $filter,
             'search' => $request->input('search'),

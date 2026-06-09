@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app-modern')
+
+@section('title', 'Receipt Details')
 
 @section('content')
 <div class="container">

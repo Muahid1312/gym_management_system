@@ -11,8 +11,26 @@ class AttendanceController extends Controller
 {
     public function index()
     {
-        return view('attendance.index', [
-            'attendances' => Attendance::with('member')->orderByDesc('check_in_time')->get(),
+        $attendancesQuery = Attendance::with('member')->orderByDesc('check_in_time');
+        $attendances = $attendancesQuery->paginate(10);
+
+        $todayCount = Attendance::whereDate('check_in_time', now()->toDateString())->count();
+        $monthCount = Attendance::whereYear('check_in_time', now()->year)->whereMonth('check_in_time', now()->month)->count();
+
+        // simple 7-day average
+        $sevenDayCounts = Attendance::whereBetween('check_in_time', [now()->subDays(6)->startOfDay(), now()->endOfDay()])
+            ->selectRaw('DATE(check_in_time) as day, COUNT(*) as cnt')
+            ->groupBy('day')
+            ->pluck('cnt')
+            ->toArray();
+
+        $weekAverage = count($sevenDayCounts) ? round(array_sum($sevenDayCounts) / count($sevenDayCounts)) : 0;
+
+        return view('attendance-modern', [
+            'attendances' => $attendances,
+            'todayCount' => $todayCount,
+            'weekAverage' => $weekAverage,
+            'monthCount' => $monthCount,
         ]);
     }
 

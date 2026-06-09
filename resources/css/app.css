@@ -10,3 +10,129 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer base {
+    :root {
+        --color-bg: #f8fafc;
+        --color-surface: #ffffff;
+        --color-surface-soft: #f8fafc;
+        --color-text: #0f172a;
+        --color-muted: #64748b;
+        --color-primary: #f97316;
+        --color-primary-dark: #ea580c;
+        --color-border: #e2e8f0;
+    }
+
+    html.theme-dark {
+        --color-bg: #0f172a;
+        --color-surface: #111827;
+        --color-surface-soft: #1f2937;
+        --color-text: #f8fafc;
+        --color-muted: #94a3b8;
+        --color-primary: #fb923c;
+        --color-primary-dark: #ea580c;
+        --color-border: #334155;
+    }
+
+    html.theme-dark body {
+        background: var(--color-bg);
+        color: var(--color-text);
+    }
+
+    html.theme-dark .card,
+    html.theme-dark .modal-content,
+    html.theme-dark .toast,
+    html.theme-dark .sidebar,
+    html.theme-dark .drawer,
+    html.theme-dark .card-body,
+    html.theme-dark .card-header,
+    html.theme-dark .form-group input,
+    html.theme-dark .form-group select,
+    html.theme-dark .form-group textarea,
+    html.theme-dark .sidebar-header,
+    html.theme-dark .sidebar-footer,
+    html.theme-dark .search-box,
+    html.theme-dark .icon-button {
+        background-color: #111827 !important;
+        color: #f8fafc !important;
+        border-color: #334155 !important;
+    }
+
+    html.theme-dark .card-header,
+    html.theme-dark .sidebar-header,
+    html.theme-dark .sidebar-footer {
+        background-color: #111827 !important;
+    }
+
+    html.theme-dark .bg-white { background-color: #111827 !important; }
+    html.theme-dark .bg-slate-50 { background-color: #111827 !important; }
+    html.theme-dark .bg-slate-100 { background-color: #1f2937 !important; }
+    html.theme-dark .bg-slate-200 { background-color: #1e293b !important; }
+    html.theme-dark .text-slate-900 { color: #f8fafc !important; }
+    html.theme-dark .text-slate-800 { color: #e2e8f0 !important; }
+    html.theme-dark .text-slate-700 { color: #cbd5e1 !important; }
+    html.theme-dark .text-slate-600 { color: #94a3b8 !important; }
+    html.theme-dark .text-slate-500 { color: #94a3b8 !important; }
+    html.theme-dark .text-slate-400 { color: #cbd5e1 !important; }
+    html.theme-dark .border-slate-200 { border-color: #334155 !important; }
+    html.theme-dark .border-slate-300 { border-color: #334155 !important; }
+    html.theme-dark .border-slate-400 { border-color: #475569 !important; }
+    html.theme-dark .shadow-sm { box-shadow: 0 1px 2px rgba(15, 23, 42, 0.35) !important; }
+    html.theme-dark .shadow-xl { box-shadow: 0 20px 25px rgba(15, 23, 42, 0.35) !important; }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-slate-50 text-slate-900 antialiased;
+        font-family: var(--font-sans);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        @apply focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-slate-50;
+    }
+
+    .card {
+        @apply rounded-3xl border border-slate-200 bg-white shadow-sm;
+    }
+
+    .card-header {
+        @apply rounded-t-3xl border-b border-slate-200 bg-slate-50 px-6 py-4;
+    }
+
+    .card-body {
+        @apply p-6;
+    }
+
+    .btn-primary {
+        @apply inline-flex items-center justify-center rounded-2xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600;
+    }
+
+    .btn-secondary {
+        @apply inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800;
+    }
+
+    .input-primary {
+        @apply w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition duration-200;
+    }
+
+    .input-primary:focus {
+        @apply ring-2 ring-orange-500 border-orange-500;
+    }
+
+    .toast {
+        @apply rounded-3xl border border-slate-200 bg-white p-4 shadow-lg;
+    }
+
+    .modal-content {
+        @apply rounded-3xl border border-slate-200 bg-white shadow-2xl;
+    }
+
+    .sidebar {
+        @apply bg-white border-r border-slate-200 shadow-xl;
+    }
+}

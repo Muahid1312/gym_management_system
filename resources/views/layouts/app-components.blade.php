@@ -14,26 +14,26 @@
     <!-- Custom Styles -->
     <style>
         :root {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --secondary: #6b7280;
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --secondary: #64748b;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
             --info: #06b6d4;
-            --light: #f9fafb;
-            --dark: #111827;
+            --light: #f8fafc;
+            --dark: #0f172a;
 
-            --background: #ffffff;
-            --surface: #f9fafb;
-            --surface-soft: #f3f4f6;
-            --text: #111827;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
-            --border-light: #f3f4f6;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --surface-soft: #f1f5f9;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --border-light: #e2e8f0;
 
-            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.12);
         }
 
         .theme-dark {
@@ -63,12 +63,13 @@
         .sidebar {
             background-color: var(--surface);
             border-right: 1px solid var(--border);
+            box-shadow: var(--shadow);
         }
 
         .card {
             background-color: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 1.5rem;
             box-shadow: var(--shadow);
         }
 
@@ -235,8 +236,8 @@
 
     @stack('styles')
 </head>
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+<body class="font-sans antialiased bg-slate-50 text-slate-900">
+    <div class="min-h-screen bg-slate-100">
         <!-- Sidebar Overlay (Mobile) -->
         <div id="sidebar-overlay" class="fixed inset-0 z-40 hidden bg-black bg-opacity-50 md:hidden" onclick="toggleSidebar()"></div>
 
@@ -244,7 +245,7 @@
         <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:inset-0">
             <div class="flex flex-col h-full">
                 <!-- Logo -->
-                <div class="flex items-center justify-center h-16 px-4 bg-blue-600">
+                <div class="flex items-center justify-center h-16 px-4 bg-gradient-to-r from-orange-500 to-red-600 shadow-sm">
                     <h1 class="text-xl font-bold text-white">{{ config('app.name', 'Gym Manager') }}</h1>
                 </div>
 
